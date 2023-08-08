@@ -69,6 +69,9 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public MealPostOutputDTO saveNewMeal(MealPostInputDTO dto) {
+        if(mealRepository.findByName(dto.getName()) != null)
+            throw new BusinessException(ErrorsTable.RESOURCE_ALREADY_EXISTS,
+                    String.format("%s", dto.getName().toUpperCase()));
         return mapper.mealEntityToPostOutputDto(mealRepository.save(mapper.mealPostInputDtoToEntity(dto)));
     }
 

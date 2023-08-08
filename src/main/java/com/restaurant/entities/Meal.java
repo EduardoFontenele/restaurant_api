@@ -1,12 +1,6 @@
 package com.restaurant.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +14,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
-@Entity(name = "meals")
+@Entity
+@Table(name = "meals")
 public class Meal {
 
     @Id

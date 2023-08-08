@@ -10,6 +10,7 @@ public enum ErrorsTable {
 
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Error registering item [item]"),
     NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "Item [item] could not be found"),
+    RESOURCE_ALREADY_EXISTS(HttpStatus.CONFLICT, "Item [item] already exists"),
     PATH_VARIABLE_ERROR(HttpStatus.BAD_REQUEST, "Error on path variable, value is invalid or null");
 
     private final HttpStatus httpStatus;
