@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ValidationDTO {
-    private String field;
-    private String error;
+public class ErrorDTO {
+    private String errorMessage;
+    private List<ValidationDTO> validationErrorList;
 }

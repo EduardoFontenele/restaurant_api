@@ -4,11 +4,10 @@ import com.restaurant.dtos.meal.MealGetDTO;
 import com.restaurant.dtos.meal.MealPatchDTO;
 import com.restaurant.dtos.meal.MealPostInputDTO;
 import com.restaurant.dtos.meal.MealPostOutputDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface MealService {
-    List<MealGetDTO> listAll();
+    Page<MealGetDTO> listAll(Integer pageNumber, Integer pageSize, Double maximumPrice);
 
     MealPostOutputDTO saveNewMeal(MealPostInputDTO dto);
 
