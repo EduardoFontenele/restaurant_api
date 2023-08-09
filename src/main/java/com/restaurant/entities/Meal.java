@@ -1,6 +1,14 @@
 package com.restaurant.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +33,7 @@ public class Meal {
     @Column(columnDefinition = "varchar(255) not null")
     private String name;
 
-    @Column(columnDefinition = "decimal(4,2) default '20'")
+    @Column(columnDefinition = "decimal(4,2) not null")
     private BigDecimal price;
 
     @ManyToOne

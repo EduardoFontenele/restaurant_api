@@ -29,26 +29,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderPostOutputDTO createNewOrder(OrderPostInputDTO dto) {
         BigDecimal totalOrderPrice = new BigDecimal(0);
-        MealOrderOutputDTO outputOrderDto = new MealOrderOutputDTO();
         List<MealOrderOutputDTO> orderMealDTOS = new Vector<>();
 
         for(MealOrderInputDTO inputMeal : dto.getOrderedMeals()) {
             MealGetDTO mealGetDTO = mealService.findMealById(inputMeal.getId());
-            MealOrderOutputDTO outputMealDto = new MealOrderOutputDTO();
-            BigDecimal totalMealPrice = new BigDecimal(mealGetDTO.getPrice().toString());
-
-            MathContext mc = new MathContext(4);
-            totalMealPrice = totalMealPrice.multiply(BigDecimal.valueOf(inputMeal.getQuantity()), mc);
-
-            outputMealDto.setName(mealGetDTO.getName());
-            outputMealDto.setPrice(mealGetDTO.getPrice());
-            outputMealDto.setQuantity(inputMeal.getQuantity());
-            outputMealDto.setTotalPrice(totalMealPrice);
+            MealOrderOutputDTO outputMealDto = generateMealOrderOutputDTO(inputMeal, mealGetDTO);
             orderMealDTOS.add(outputMealDto);
         }
 
         for(MealOrderOutputDTO mealOutputDto : orderMealDTOS) {
-            totalOrderPrice = totalOrderPrice.add(mealOutputDto.getTotalPrice(), new MathContext(4));
+            totalOrderPrice = totalOrderPrice.add(mealOutputDto.getTotalPrice(), new MathContext(8));
         }
 
         Order entity = new Order(dto.getCostumerName(), totalOrderPrice);
@@ -60,5 +50,19 @@ public class OrderServiceImpl implements OrderService {
                 .orderTime(savedEntity.getOrderTime())
                 .totalPrice(savedEntity.getTotalPrice())
                 .build();
+    }
+
+    private static MealOrderOutputDTO generateMealOrderOutputDTO(MealOrderInputDTO inputMeal, MealGetDTO mealGetDTO) {
+        MealOrderOutputDTO outputMealDto = new MealOrderOutputDTO();
+        BigDecimal totalMealPrice = new BigDecimal(mealGetDTO.getPrice().toString());
+
+        MathContext mc = new MathContext(8);
+        totalMealPrice = totalMealPrice.multiply(BigDecimal.valueOf(inputMeal.getQuantity()), mc);
+
+        outputMealDto.setName(mealGetDTO.getName());
+        outputMealDto.setPrice(mealGetDTO.getPrice());
+        outputMealDto.setQuantity(inputMeal.getQuantity());
+        outputMealDto.setTotalPrice(totalMealPrice);
+        return outputMealDto;
     }
 }
