@@ -41,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
             totalOrderPrice = totalOrderPrice.add(mealOutputDto.getTotalPrice(), new MathContext(8));
         }
 
-        Order entity = new Order(dto.getCostumerName(), totalOrderPrice);
-        Order savedEntity = orderRepository.save(entity);
+        Order savedEntity = orderRepository.save(new Order(dto.getCostumerName(), totalOrderPrice));
 
         return OrderPostOutputDTO.builder()
                 .orderedMeals(orderMealDTOS)
