@@ -1,7 +1,6 @@
 package com.restaurant.dtos.order;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.restaurant.dtos.meal.MealGetDTO;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,5 +21,5 @@ public class OrderPostInputDTO {
 
     @NotNull
     @JsonInclude
-    private List<MealGetDTO> orderedMeals;
+    private List<MealOrderInputDTO> orderedMeals;
 }

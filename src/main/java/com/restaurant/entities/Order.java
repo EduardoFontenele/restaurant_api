@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(force = true)
 @Builder
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +23,17 @@ public class Order {
     @Column(nullable = false, name = "costumer_name")
     private String costumerName;
 
-    @Column(nullable = false, name = "total_price")
+    @Column(nullable = false, name = "total_price", columnDefinition = "decimal(4,2)")
     private BigDecimal totalPrice;
 
     @CreationTimestamp
     private LocalDateTime orderTime;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus = OrderStatus.PENDING;
+
+    public Order(String costumerName, BigDecimal totalPrice) {
+        this.costumerName = costumerName;
+        this.totalPrice = totalPrice;
+    }
 }
