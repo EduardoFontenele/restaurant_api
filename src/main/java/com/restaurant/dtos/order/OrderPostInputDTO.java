@@ -21,5 +21,5 @@ public class OrderPostInputDTO {
 
     @NotNull
     @JsonInclude
-    private List<MealOrderInputDTO> orderedMeals;
+    private List<OrderMealInputDTO> orderedMeals;
 }

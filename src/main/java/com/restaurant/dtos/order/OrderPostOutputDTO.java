@@ -1,6 +1,5 @@
 package com.restaurant.dtos.order;
 
-import com.restaurant.dtos.meal.MealGetDTO;
 import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,7 +22,7 @@ public class OrderPostOutputDTO {
     @Digits(integer = 3, fraction = 2)
     private BigDecimal totalPrice;
 
-    private LocalDateTime orderTime;
-
-    private List<MealOrderOutputDTO> orderedMeals;
+    private String orderDate;
+    private String orderTime;
+    private List<OrderMealOutputDTO> orderedMeals;
 }

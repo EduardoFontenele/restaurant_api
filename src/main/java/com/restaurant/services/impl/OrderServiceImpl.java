@@ -1,11 +1,14 @@
 package com.restaurant.services.impl;
 
 import com.restaurant.dtos.meal.MealGetDTO;
-import com.restaurant.dtos.order.MealOrderInputDTO;
-import com.restaurant.dtos.order.MealOrderOutputDTO;
+import com.restaurant.dtos.order.CostumerOrderGetDTO;
+import com.restaurant.dtos.order.OrderMealInputDTO;
+import com.restaurant.dtos.order.OrderMealOutputDTO;
 import com.restaurant.dtos.order.OrderPostInputDTO;
 import com.restaurant.dtos.order.OrderPostOutputDTO;
 import com.restaurant.entities.Order;
+import com.restaurant.exceptions.BusinessException;
+import com.restaurant.exceptions.ErrorsTable;
 import com.restaurant.mappers.OrderMapper;
 import com.restaurant.repositories.OrderRepository;
 import com.restaurant.services.MealService;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Vector;
 
@@ -29,39 +33,54 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderPostOutputDTO createNewOrder(OrderPostInputDTO dto) {
         BigDecimal totalOrderPrice = new BigDecimal(0);
-        List<MealOrderOutputDTO> orderMealDTOS = new Vector<>();
+        List<OrderMealOutputDTO> orderMealDTOS = new Vector<>();
 
-        for(MealOrderInputDTO inputMeal : dto.getOrderedMeals()) {
+        for(OrderMealInputDTO inputMeal : dto.getOrderedMeals()) {
+            if(inputMeal.getQuantity() < 1 || inputMeal.getId() < 1)
+                throw new BusinessException(ErrorsTable.ERROR_CREATING_ORDER);
+
             MealGetDTO mealGetDTO = mealService.findMealById(inputMeal.getId());
-            MealOrderOutputDTO outputMealDto = generateMealOrderOutputDTO(inputMeal, mealGetDTO);
+            OrderMealOutputDTO outputMealDto = generateMealOrderOutputDTO(inputMeal, mealGetDTO);
             orderMealDTOS.add(outputMealDto);
         }
 
-        for(MealOrderOutputDTO mealOutputDto : orderMealDTOS) {
+        for(OrderMealOutputDTO mealOutputDto : orderMealDTOS) {
             totalOrderPrice = totalOrderPrice.add(mealOutputDto.getTotalPrice(), new MathContext(8));
         }
 
         Order savedEntity = orderRepository.save(new Order(dto.getCostumerName(), totalOrderPrice));
 
+        DateTimeFormatter formatterOrderTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String orderTime = savedEntity.getOrderTime().format(formatterOrderTime);
+
+        DateTimeFormatter formatterOrderDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String orderDate = savedEntity.getOrderTime().format(formatterOrderDate);
+
         return OrderPostOutputDTO.builder()
                 .orderedMeals(orderMealDTOS)
                 .costumerName(savedEntity.getCostumerName())
-                .orderTime(savedEntity.getOrderTime())
+                .orderTime(orderTime)
+                .orderDate(orderDate)
                 .totalPrice(savedEntity.getTotalPrice())
                 .build();
     }
 
-    private static MealOrderOutputDTO generateMealOrderOutputDTO(MealOrderInputDTO inputMeal, MealGetDTO mealGetDTO) {
-        MealOrderOutputDTO outputMealDto = new MealOrderOutputDTO();
+    private static OrderMealOutputDTO generateMealOrderOutputDTO(OrderMealInputDTO inputMeal, MealGetDTO mealGetDTO) {
+        OrderMealOutputDTO orderMealOutputDTO = new OrderMealOutputDTO();
         BigDecimal totalMealPrice = new BigDecimal(mealGetDTO.getPrice().toString());
 
-        MathContext mc = new MathContext(8);
-        totalMealPrice = totalMealPrice.multiply(BigDecimal.valueOf(inputMeal.getQuantity()), mc);
+        totalMealPrice = totalMealPrice.multiply(BigDecimal
+                .valueOf(inputMeal.getQuantity()), new MathContext(8));
 
-        outputMealDto.setName(mealGetDTO.getName());
-        outputMealDto.setPrice(mealGetDTO.getPrice());
-        outputMealDto.setQuantity(inputMeal.getQuantity());
-        outputMealDto.setTotalPrice(totalMealPrice);
-        return outputMealDto;
+        orderMealOutputDTO.setName(mealGetDTO.getName());
+        orderMealOutputDTO.setPrice(mealGetDTO.getPrice());
+        orderMealOutputDTO.setQuantity(inputMeal.getQuantity());
+        orderMealOutputDTO.setTotalPrice(totalMealPrice);
+        return orderMealOutputDTO;
+    }
+
+    @Override
+    public List<CostumerOrderGetDTO> listPreviousCostumerOrders() {
+        return orderRepository.findAll().stream().map(orderMapper::orderEntityToCostumerGetDto).toList();
     }
 }

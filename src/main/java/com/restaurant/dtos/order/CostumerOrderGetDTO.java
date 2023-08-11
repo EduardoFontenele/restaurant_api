@@ -13,10 +13,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MealOrderOutputDTO {
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private BigDecimal totalPrice;
+public class CostumerOrderGetDTO {
 
+    private Long id;
+    private String costumerName;
+    private BigDecimal totalPrice;
+    private String orderDate;
+    private String orderTime;
 }
