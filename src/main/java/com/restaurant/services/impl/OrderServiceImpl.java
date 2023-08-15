@@ -1,7 +1,7 @@
 package com.restaurant.services.impl;
 
 import com.restaurant.dtos.meal.MealGetDTO;
-import com.restaurant.dtos.order.CostumerOrderGetDTO;
+import com.restaurant.dtos.order.CustomerOrderGetDTO;
 import com.restaurant.dtos.order.OrderMealInputDTO;
 import com.restaurant.dtos.order.OrderMealOutputDTO;
 import com.restaurant.dtos.order.OrderPostInputDTO;
@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
             totalOrderPrice = totalOrderPrice.add(mealOutputDto.getTotalPrice(), new MathContext(8));
         }
 
-        Order savedEntity = orderRepository.save(new Order(dto.getCostumerName(), totalOrderPrice));
+        Order savedEntity = orderRepository.save(new Order(dto.getCustomerName(), totalOrderPrice));
 
         DateTimeFormatter formatterOrderTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         String orderTime = savedEntity.getOrderTime().format(formatterOrderTime);
@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
         return OrderPostOutputDTO.builder()
                 .orderedMeals(orderMealDTOS)
-                .costumerName(savedEntity.getCostumerName())
+                .customerName(savedEntity.getCustomerName())
                 .orderTime(orderTime)
                 .orderDate(orderDate)
                 .totalPrice(savedEntity.getTotalPrice())
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<CostumerOrderGetDTO> listPreviousCostumerOrders() {
+    public List<CustomerOrderGetDTO> listPreviousCostumerOrders() {
         return orderRepository.findAll().stream().map(orderMapper::orderEntityToCostumerGetDto).toList();
     }
 }

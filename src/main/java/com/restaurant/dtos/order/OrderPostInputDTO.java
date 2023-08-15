@@ -15,9 +15,9 @@ import java.util.List;
 @Builder
 public class OrderPostInputDTO {
 
-    @NotEmpty(message = "'costumerName' can't be empty")
+    @NotEmpty(message = "'customerName' can't be empty")
     @Size(min = 3, max = 255, message = "Size must be 3-255 characters")
-    private String costumerName;
+    private String customerName;
 
     @NotNull
     @JsonInclude

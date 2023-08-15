@@ -1,7 +1,7 @@
 package com.restaurant.mappers;
 
 import com.restaurant.dtos.meal.MealGetDTO;
-import com.restaurant.dtos.order.CostumerOrderGetDTO;
+import com.restaurant.dtos.order.CustomerOrderGetDTO;
 import com.restaurant.dtos.order.OrderMealInputDTO;
 import com.restaurant.entities.Order;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class OrderMapper {
         return Objects.isNull(mealGetDTO) ? null : modelMapper.map(mealGetDTO, OrderMealInputDTO.class);
     }
 
-    public CostumerOrderGetDTO orderEntityToCostumerGetDto(Order entity) {
-        CostumerOrderGetDTO outputDto = new CostumerOrderGetDTO();
+    public CustomerOrderGetDTO orderEntityToCostumerGetDto(Order entity) {
+        CustomerOrderGetDTO outputDto = new CustomerOrderGetDTO();
 
         DateTimeFormatter formatterOrderTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter formatterOrderDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -33,7 +33,7 @@ public class OrderMapper {
         outputDto.setOrderTime(formattedOrderTime);
         outputDto.setOrderDate(formattedOrderDate);
         outputDto.setTotalPrice(entity.getTotalPrice());
-        outputDto.setCostumerName(entity.getCostumerName());
+        outputDto.setCustomerName(entity.getCustomerName());
 
         return outputDto;
 

@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CostumerOrderGetDTO {
+public class CustomerOrderGetDTO {
 
     private Long id;
-    private String costumerName;
+    private String customerName;
     private BigDecimal totalPrice;
     private String orderDate;
     private String orderTime;

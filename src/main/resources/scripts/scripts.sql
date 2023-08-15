@@ -1,0 +1,1 @@
+insert ignore into users(`email`, `pwd`, `role`)values ('eduardofontedev@gmail.com', 'admin123', 'admin');

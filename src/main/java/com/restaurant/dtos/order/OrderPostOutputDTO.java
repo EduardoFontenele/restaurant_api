@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class OrderPostOutputDTO {
 
-    private String costumerName;
+    private String customerName;
 
     @Digits(integer = 3, fraction = 2)
     private BigDecimal totalPrice;

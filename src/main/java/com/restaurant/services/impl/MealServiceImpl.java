@@ -11,6 +11,7 @@ import com.restaurant.mappers.MealsMapper;
 import com.restaurant.repositories.MealRepository;
 import com.restaurant.repositories.MenuSectionRepository;
 import com.restaurant.services.MealService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,6 +60,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @Transactional
     public MealGetDTO findMealById(Long id) {
         if(mealRepository.findById(id).isPresent()) {
             return mapper.mealEntityToGetDto(mealRepository.findById(id).get());
@@ -76,6 +78,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @Transactional
     public MealPatchDTO updateMealById(MealPatchDTO dto, Long id) {
         MealPatchDTO updatedDto = new MealPatchDTO();
         if(mealRepository.findById(id).isPresent()) {
@@ -107,6 +110,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @Transactional
     public void deleteMealById(Long id) {
         if(mealRepository.findById(id).isPresent()) {
             mealRepository.deleteById(id);

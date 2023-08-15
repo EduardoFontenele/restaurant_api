@@ -32,8 +32,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "costumer_name")
-    private String costumerName;
+    @Column(nullable = false, name = "customer_name")
+    private String customerName;
 
     @Column(nullable = false, name = "total_price", columnDefinition = "decimal(10,2)")
     private BigDecimal totalPrice;
@@ -44,8 +44,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
-    public Order(String costumerName, BigDecimal totalPrice) {
-        this.costumerName = costumerName;
+    public Order(String customerName, BigDecimal totalPrice) {
+        this.customerName = customerName;
         this.totalPrice = totalPrice;
     }
 }

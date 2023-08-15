@@ -1,6 +1,6 @@
 package com.restaurant.controllers;
 
-import com.restaurant.dtos.order.CostumerOrderGetDTO;
+import com.restaurant.dtos.order.CustomerOrderGetDTO;
 import com.restaurant.dtos.order.OrderPostInputDTO;
 import com.restaurant.dtos.order.OrderPostOutputDTO;
 import com.restaurant.services.OrderService;
@@ -29,7 +29,7 @@ public class OrdersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CostumerOrderGetDTO>> listPreviousCostumerOrders() {
+    public ResponseEntity<List<CustomerOrderGetDTO>> listPreviousCostumerOrders() {
         return new ResponseEntity<>(orderService.listPreviousCostumerOrders(), HttpStatus.OK);
     }
 
