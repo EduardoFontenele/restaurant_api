@@ -22,7 +22,7 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http.authorizeHttpRequests(request -> {
-            request.anyRequest().permitAll();
+            request.anyRequest().authenticated();
         });
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(Customizer.withDefaults());

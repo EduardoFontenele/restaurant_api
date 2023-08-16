@@ -26,21 +26,21 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String userName, password;
+    public UserDetails loadUserByUsername(String passedEmail) throws UsernameNotFoundException {
+        String userEmail, password;
         List<GrantedAuthority> authorities;
-        Customer foundCustomer = customerRepository.findByEmail(username);
+        Customer foundCustomer = customerRepository.findByEmail(passedEmail);
         if(Objects.isNull(foundCustomer)) {
             throw new UsernameNotFoundException(String
-                    .format("User details not found for following email: %s", username));
+                    .format("User details not found for following email: %s", passedEmail));
         } else {
-            userName = foundCustomer.getEmail();
+            userEmail = foundCustomer.getEmail();
             password = foundCustomer.getPassword();
             authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(foundCustomer.getRole()));
         }
 
-        return new User(userName, password, authorities);
+        return new User(userEmail, password, authorities);
     }
 
     @Override

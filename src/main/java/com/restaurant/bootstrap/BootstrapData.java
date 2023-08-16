@@ -1,7 +1,9 @@
 package com.restaurant.bootstrap;
 
+import com.restaurant.entities.Customer;
 import com.restaurant.entities.Meal;
 import com.restaurant.entities.MenuSection;
+import com.restaurant.repositories.CustomerRepository;
 import com.restaurant.repositories.MealRepository;
 import com.restaurant.repositories.MenuSectionRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private final MenuSectionRepository menuSectionRepository;
     private final MealRepository mealRepository;
+    private final CustomerRepository customerRepository;
 
     private final MenuSection appetizers = MenuSection.builder().name("Appetizers").build();
     private final MenuSection mainCourses = MenuSection.builder().name("Main Course").build();
@@ -83,10 +86,27 @@ public class BootstrapData implements CommandLineRunner {
             .menuSection(drinks)
             .build();
 
+    private final Customer sysAdmin = Customer.builder()
+            .email("eduardofontedev@gmail.com")
+            .password("admin123")
+            .role("ADMIN")
+            .build();
+
+    private final Customer sysUser = Customer.builder()
+            .email("johndoe@gmail.com")
+            .password("user123")
+            .role("USER")
+            .build();
+
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         loadMenu();
         loadMeals();
+        loadUsers();
+    }
+
+    private void loadUsers() {
+        customerRepository.saveAll(Arrays.asList(sysUser, sysAdmin));
     }
 
     private void loadMenu() {
