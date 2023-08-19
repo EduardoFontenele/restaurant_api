@@ -6,12 +6,14 @@ import com.restaurant.entities.Customer;
 import com.restaurant.mappers.CustomerMapper;
 import com.restaurant.repositories.CustomerRepository;
 import com.restaurant.services.CustomerService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,28 +26,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String passedEmail) throws UsernameNotFoundException {
-        String userEmail, password;
-        List<GrantedAuthority> authorities;
-        Customer foundCustomer = customerRepository.findByEmail(passedEmail);
-        if(Objects.isNull(foundCustomer)) {
-            throw new UsernameNotFoundException(String
-                    .format("User details not found for following email: %s", passedEmail));
-        } else {
-            userEmail = foundCustomer.getEmail();
-            password = foundCustomer.getPassword();
-            authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(foundCustomer.getRole()));
-        }
+    public CustomerRegisterOutputDTO registerNewCustomer(CustomerRegisterInputDTO dto) {
+        Customer savedCustomer = Customer.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .role(dto.getRole().toUpperCase())
+                .build();
 
-        return new User(userEmail, password, authorities);
-    }
-
-    @Override
-    public CustomerRegisterOutputDTO registerNewCustomer(CustomerRegisterInputDTO customerRegisterInputDTO) {
-        Customer savedCustomer = customerMapper.customerRegisterDtoToEntity(customerRegisterInputDTO);
         return customerMapper.customerEntityToRegisterDto(customerRepository.save(savedCustomer));
     }
 }

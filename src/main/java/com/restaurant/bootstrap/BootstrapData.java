@@ -8,6 +8,8 @@ import com.restaurant.repositories.MealRepository;
 import com.restaurant.repositories.MenuSectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ public class BootstrapData implements CommandLineRunner {
     private final MenuSectionRepository menuSectionRepository;
     private final MealRepository mealRepository;
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final MenuSection appetizers = MenuSection.builder().name("Appetizers").build();
     private final MenuSection mainCourses = MenuSection.builder().name("Main Course").build();
@@ -88,13 +91,13 @@ public class BootstrapData implements CommandLineRunner {
 
     private final Customer sysAdmin = Customer.builder()
             .email("eduardofontedev@gmail.com")
-            .password("admin123")
+            .password(passwordEncoder.encode("admin123"))
             .role("ADMIN")
             .build();
 
     private final Customer sysUser = Customer.builder()
             .email("johndoe@gmail.com")
-            .password("user123")
+            .password(passwordEncoder.encode("user123"))
             .role("USER")
             .build();
 
