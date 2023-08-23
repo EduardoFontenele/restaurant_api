@@ -1,7 +1,7 @@
 package com.restaurant.services.impl;
 
-import com.restaurant.dtos.menuSection.MenuPostInputDTO;
-import com.restaurant.dtos.menuSection.MenuPostOutputDTO;
+import com.restaurant.dtos.menuSection.MenuSectionPostInputDTO;
+import com.restaurant.dtos.menuSection.MenuSectionPostOutputDTO;
 import com.restaurant.dtos.menuSection.MenuSectionGetDTO;
 import com.restaurant.entities.MenuSection;
 import com.restaurant.mappers.MenuSectionMapper;
@@ -24,7 +24,7 @@ public class MenuSectionServiceImpl implements MenuSectionService {
     }
 
     @Override
-    public MenuPostOutputDTO save(MenuPostInputDTO dto) {
+    public MenuSectionPostOutputDTO save(MenuSectionPostInputDTO dto) {
         MenuSection entity = mapper.menuSectionPostInputDtoToEntity(dto);
         return mapper.menuPostEntityToOutputDto(menuSectionRepository.save(entity));
     }

@@ -1,15 +1,18 @@
 package com.restaurant.services.impl;
 
+import com.restaurant.dtos.address.AddressGetDTO;
 import com.restaurant.dtos.meal.MealGetDTO;
 import com.restaurant.dtos.order.CustomerOrderGetDTO;
 import com.restaurant.dtos.order.OrderMealInputDTO;
 import com.restaurant.dtos.order.OrderMealOutputDTO;
 import com.restaurant.dtos.order.OrderPostInputDTO;
 import com.restaurant.dtos.order.OrderPostOutputDTO;
+import com.restaurant.entities.Address;
 import com.restaurant.entities.Order;
 import com.restaurant.exceptions.BusinessException;
 import com.restaurant.exceptions.ErrorsTable;
 import com.restaurant.mappers.OrderMapper;
+import com.restaurant.repositories.AddressRepository;
 import com.restaurant.repositories.OrderRepository;
 import com.restaurant.services.MealService;
 import com.restaurant.services.OrderService;
@@ -28,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final MealService mealService;
+    private final AddressRepository addressRepository;
     private final OrderMapper orderMapper;
 
     @Override
@@ -56,12 +60,15 @@ public class OrderServiceImpl implements OrderService {
         DateTimeFormatter formatterOrderDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String orderDate = savedEntity.getOrderTime().format(formatterOrderDate);
 
+        Address customerAddress = addressRepository.findById(dto.getCustomerAddressId()).get();
+
         return OrderPostOutputDTO.builder()
                 .orderedMeals(orderMealDTOS)
                 .customerName(savedEntity.getCustomerName())
                 .orderTime(orderTime)
                 .orderDate(orderDate)
                 .totalPrice(savedEntity.getTotalPrice())
+                .address(new AddressGetDTO(customerAddress.getStreet(), customerAddress.getNumber(), customerAddress.getComplement()))
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package com.restaurant.dtos.meal;
 
-import com.restaurant.dtos.menuSection.MenuPostOutputDTO;
+import com.restaurant.dtos.menuSection.MenuSectionPostOutputDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +18,5 @@ public class MealPostOutputDTO {
     private Long id;
     private String name;
     private BigDecimal price;
-    private MenuPostOutputDTO menuSection;
+    private MenuSectionPostOutputDTO menuSection;
 }

@@ -1,4 +1,4 @@
-package com.restaurant.dtos.menuSection;
+package com.restaurant.dtos.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MenuPostOutputDTO {
-    private Long id;
-    private String name;
+public class AddressGetDTO {
+    private String street;
+    private Integer number;
+    private String complement;
 }

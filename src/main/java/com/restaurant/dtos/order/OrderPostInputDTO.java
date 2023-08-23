@@ -22,4 +22,7 @@ public class OrderPostInputDTO {
     @NotNull
     @JsonInclude
     private List<OrderMealInputDTO> orderedMeals;
+
+    @NotNull
+    private Long customerAddressId;
 }

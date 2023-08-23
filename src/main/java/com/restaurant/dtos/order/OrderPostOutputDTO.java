@@ -1,5 +1,6 @@
 package com.restaurant.dtos.order;
 
+import com.restaurant.dtos.address.AddressGetDTO;
 import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,5 @@ public class OrderPostOutputDTO {
     private String orderDate;
     private String orderTime;
     private List<OrderMealOutputDTO> orderedMeals;
+    private AddressGetDTO address;
 }

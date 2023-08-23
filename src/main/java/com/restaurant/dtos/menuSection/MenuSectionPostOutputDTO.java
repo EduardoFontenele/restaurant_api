@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MenuPostInputDTO {
+public class MenuSectionPostOutputDTO {
+    private Long id;
     private String name;
 }
